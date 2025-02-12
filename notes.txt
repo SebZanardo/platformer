@@ -1,0 +1,40 @@
+----- The deltatime struggle...
+Accurate deltatime (Jonas Tyroller)
+https://www.youtube.com/watch?v=yGhfUcPjXuE
++
+Clamping my dt value to a maximum value
+
+I naively thought that this would be the solution to all my problems...
+But when playtesting the game at lower frame rates I noticed that my player
+character was jumping at different heights when running at lower FPS! There is
+an issue with this approach ;(
+
+With some more research I found this fantastic resource:
+
+https://gafferongames.com/post/fix_your_timestep/
+
+The "Fix Your Timestep!" article is great as it walks through different
+implementations and points out the positives and negatives.
+
+I like the sound of the "Semi-fixed timestep" with clamping/slowdown to avoid
+the dreaded "spiral of death".
+
+"The final touch" sounds very promising until you realise you have to store a
+copy of all your game state to interpolate between... amongst other issues
+outlined in this article:
+
+https://web.archive.org/web/20220522084249/https://www.gamedeveloper.com/programming/fixing-your-time-step-the-easy-way-with-the-golden-4-8537-ms-
+
+I didn't like the approach in the above article but the author pointed out some
+shortcomings with the approach Glenn Fiedler discussed.
+
+Another article following "The final touch" approach discussed by Fiedler.
+
+https://gamesfromwithin.com/casey-and-the-clearly-deterministic-contraptions
+
+Ultimately, fixed delta time is both simple, and reproducable. To save any more
+headaches in the short-term I will be using a fixed delta time. I chose 60FPS
+because it is common and a good FPS for web builds in my experience.
+
+----- Data oriented design
+https://gamesfromwithin.com/data-oriented-design-now-and-in-the-future

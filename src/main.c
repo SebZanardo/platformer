@@ -8,8 +8,7 @@
 #define WINDOW_WIDTH 1280
 #define WINDOW_HEIGHT 720
 #define WINDOW_CAPTION "platformer"
-#define FPS 0
-#define MIN_FPS 60
+#define FPS 60
 
 #define CELL_WIDTH 16
 #define CELL_HEIGHT 16
@@ -88,8 +87,7 @@ int main(void) {
         WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f
     };
 
-    // max_dt to stop lag spikes that cause inaccurate movement and collision
-    const float max_dt = 1.0f / MIN_FPS;
+    const float dt = 1.0f / FPS;
 
     // Initialise game
     InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_CAPTION);
@@ -138,9 +136,6 @@ int main(void) {
 
     while (!WindowShouldClose()) {
         // UPDATE -------------------------------------------------------------
-        float dt = GetFrameTime();
-        if (dt > max_dt) dt = max_dt;
-
         int keycode_pressed = GetKeyPressed();
         if (keycode_pressed) sprintf(keycode, "KEYCODE: %d", keycode_pressed);
 
@@ -193,14 +188,12 @@ int main(void) {
             fall_speed *= player.fall_multiplier;
         }
 
-        // Accurate deltatime (Jonas Tyroller)
-        // https://www.youtube.com/watch?v=yGhfUcPjXuE
-        Vector2 half_acc = (Vector2) {
-            input_dir.x * player.speed * dt * 0.5f,
-            fall_speed * dt * 0.5f
+        Vector2 acc = (Vector2) {
+            input_dir.x * player.speed * dt,
+            fall_speed * dt
         };
 
-        player.vel = Vector2Add(player.vel, half_acc);
+        player.vel = Vector2Add(player.vel, acc);
         player.vel = Vector2Clamp(player.vel, player.min_vel, player.max_vel);
 
         // Check for collision, handle each axis separately
@@ -254,9 +247,6 @@ int main(void) {
             }
         }
 
-        player.vel = Vector2Add(player.vel, half_acc);
-        player.vel = Vector2Clamp(player.vel, player.min_vel, player.max_vel);
-
         // RENDER -------------------------------------------------------------
         BeginDrawing();
 
@@ -282,9 +272,6 @@ int main(void) {
         DrawRectangleRec(player.aabb, MAGENTA);
 
         EndMode2D();
-
-        DrawFPS(0, 0);
-        DrawText(keycode, 0, 20, 20, MAGENTA);
 
         EndDrawing();
     }
