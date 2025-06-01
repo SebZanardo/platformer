@@ -1,4 +1,32 @@
------ The deltatime struggle...
+### RESOLUTIONS ###
+4096x2160    (4k)
+3840x2160    (Ultra HD)
+1920x1080    (Full HD)
+1280x720     (HD/Nintendo Switch) (SELECTED)
+720x480      (SD)
+320x240      (N64)
+256x192      (Nintendo DS)
+256x240      (NES->PAL)
+160x144      (Nintendo Game Boy)
+
+### DELTATIME ###
+Deltatime is the measurement of elapsed time between the last two frames. As a
+result, deltatime always has a one frame delay.
+
+Things that you want to be repeatable don't use deltatime, for example a
+physics simulation. Slowdown on machines that cannot run at the target FPS is
+good in these scenarios to ensure results can be replicated.
+
+So when to use deltatime? When the above case doesn't matter for your gameplay.
+Deltatime is nice to implement for machines that can run your game faster.
+Similar to supporting multiple graphics settings or screen resolutions.
+Supporting higher FPS gameplay means there are more frames to register and
+perform player input, which feels more responsive. However, keep in mind this
+makes playing at a lower FPS a disadvantage.
+
+NOTE: Having a fixed timestep is fantastic for online games!
+
+### DELTATIME STRUGGLE ###
 Accurate deltatime (Jonas Tyroller)
 https://www.youtube.com/watch?v=yGhfUcPjXuE
 +
@@ -36,5 +64,5 @@ Ultimately, fixed delta time is both simple, and reproducable. To save any more
 headaches in the short-term I will be using a fixed delta time. I chose 60FPS
 because it is common and a good FPS for web builds in my experience.
 
------ Data oriented design
+### DATA ORIENTED DESIGN ###
 https://gamesfromwithin.com/data-oriented-design-now-and-in-the-future
